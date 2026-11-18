@@ -1,0 +1,471 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALOTOFSTUFF AI STUDIO</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#080b14;color:white;
+ font-family:Arial,sans-serif;min-height:100vh;
+}
+:root{--blue:#4388ff;--purple:#a855f7;--panel:#111827}
+header{
+ height:75px;padding:0 25px;display:flex;
+ align-items:center;justify-content:space-between;
+ border-bottom:1px solid #253047;
+ background:#0c1120;position:sticky;top:0;z-index:5;
+}
+.logo{font-size:21px;font-weight:900;letter-spacing:1px}
+.logo span{color:#65a5ff}
+.status{color:#55e5a0;font-size:12px}
+.layout{display:flex;min-height:calc(100vh - 75px)}
+aside{
+ width:225px;padding:22px 14px;
+ background:#0c1120;border-right:1px solid #253047;
+}
+.nav{
+ padding:14px;margin:7px 0;border-radius:10px;
+ color:#aab7ce;cursor:pointer;font-size:14px;
+ transition:.2s;
+}
+.nav:hover,.nav.active{
+ background:linear-gradient(100deg,#244b94,#50328d);
+ color:white;
+}
+main{flex:1;padding:30px;min-width:0}
+h1{font-size:32px;margin:5px 0 10px}
+.subtitle{color:#9ba9c0;margin-bottom:28px}
+.panel{
+ background:var(--panel);border:1px solid #26344c;
+ border-radius:17px;padding:23px;margin-bottom:20px;
+}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.tool{
+ padding:24px;border-radius:16px;
+ background:linear-gradient(140deg,#17233b,#17152e);
+ border:1px solid #304363;cursor:pointer;
+ transition:.2s;
+}
+.tool:hover{transform:translateY(-4px);border-color:#669bff}
+.tool .emoji{font-size:32px}
+.tool h3{margin-bottom:7px}
+.tool p{color:#a8b4c9;font-size:13px;line-height:1.5}
+input,textarea,select{
+ background:#080f1e;color:white;border:1px solid #34435c;
+ border-radius:9px;padding:13px;width:100%;
+ margin:8px 0;font-size:14px;
+}
+textarea{min-height:100px;resize:vertical}
+button{
+ border:0;padding:13px 19px;border-radius:9px;
+ color:white;background:linear-gradient(100deg,#347cff,#913ff0);
+ font-weight:bold;cursor:pointer;margin:5px 3px;
+}
+button:hover{filter:brightness(1.2)}
+.secondary{background:#293650}
+.output{
+ background:#080f1e;border:1px solid #34435c;
+ border-radius:12px;padding:16px;min-height:100px;
+ margin-top:15px;overflow-wrap:anywhere;
+}
+.output img{max-width:100%;border-radius:10px}
+#videoCanvas{
+ width:100%;max-height:400px;background:#050810;
+ border-radius:12px;object-fit:contain;margin-top:12px;
+}
+.filtergrid{
+ display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+ margin:15px 0;
+}
+.filter{
+ background:#1a2940;border:1px solid #354760;
+ padding:10px 5px;border-radius:8px;
+ font-size:11px;cursor:pointer;text-align:center;
+}
+.filter.active{border:2px solid #64a3ff;background:#253e69}
+.chatbox{
+ height:340px;overflow-y:auto;background:#080f1e;
+ padding:14px;border-radius:12px;margin-bottom:12px;
+}
+.message{padding:12px;margin:9px 0;border-radius:10px;
+ max-width:90%;white-space:pre-wrap;line-height:1.5}
+.user{background:#234e91;margin-left:auto}
+.bot{background:#253044}
+.hidden{display:none!important}
+small{color:#94a3b8}
+@media(max-width:700px){
+ .layout{display:block}
+ aside{width:100%;display:flex;overflow-x:auto;padding:7px}
+ .nav{white-space:nowrap}
+ main{padding:17px}
+ .grid{grid-template-columns:1fr}
+ .filtergrid{grid-template-columns:repeat(2,1fr)}
+ h1{font-size:25px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">ALOTOFSTUFF <span>AI</span></div>
+ <div class="status">● STUDIO ONLINE</div>
+</header>
+
+<div class="layout">
+<aside>
+ <div class="nav active" onclick="showPage('home',this)">⌂ Home</div>
+ <div class="nav" onclick="showPage('chat',this)">✦ AI Chat</div>
+ <div class="nav" onclick="showPage('image',this)">▧ Image Generator</div>
+ <div class="nav" onclick="showPage('video',this)">▶ Video Studio</div>
+ <div class="nav" onclick="showPage('filters',this)">◈ 50 Filters</div>
+</aside>
+
+<main>
+
+<!-- HOME -->
+<section id="home">
+ <h1>Welcome to AI Studio.</h1>
+ <p class="subtitle">Your creative world. Powered by AI.</p>
+ <div class="grid">
+  <div class="tool" onclick="showPage('chat')">
+   <div class="emoji">✦</div><h3>AI Chat</h3>
+   <p>Ask questions, brainstorm and explore ideas.</p>
+  </div>
+  <div class="tool" onclick="showPage('image')">
+   <div class="emoji">🎨</div><h3>Image Generator</h3>
+   <p>Turn your imagination into images.</p>
+  </div>
+  <div class="tool" onclick="showPage('video')">
+   <div class="emoji">🎬</div><h3>Image to Video</h3>
+   <p>Transform pictures into animated video clips.</p>
+  </div>
+  <div class="tool" onclick="showPage('filters')">
+   <div class="emoji">⚡</div><h3>50 Video Filters</h3>
+   <p>Discover effects and cinematic styles.</p>
+  </div>
+ </div>
+ <div class="panel" style="margin-top:22px">
+  <h2>Creative AI. All in one place.</h2>
+  <p style="color:#aab7ce">Chat, create, edit, animate and experiment.</p>
+ </div>
+</section>
+
+<!-- CHAT -->
+<section id="chat" class="hidden">
+ <h1>AI Chat</h1>
+ <p class="subtitle">Talk to your AI assistant.</p>
+ <div class="panel">
+  <div class="chatbox" id="chatbox">
+   <div class="message bot">Hello! Welcome to ALOTOFSTUFF AI. What would you like to create today?</div>
+  </div>
+  <textarea id="chatInput" placeholder="Ask me anything..."></textarea>
+  <button onclick="sendChat()">Send Message ➤</button>
+  <button class="secondary" onclick="document.getElementById('chatbox').innerHTML=''">Clear Chat</button>
+  <small>AI responses require an internet connection and an available text-generation service.</small>
+ </div>
+</section>
+
+<!-- IMAGE GENERATOR -->
+<section id="image" class="hidden">
+ <h1>AI Image Generator</h1>
+ <p class="subtitle">Describe an image and bring it to life.</p>
+ <div class="panel">
+  <label>Image prompt</label>
+  <textarea id="imagePrompt" placeholder="A futuristic city at night, glowing blue skyscrapers, cinematic lighting..."></textarea>
+  <label>Art style</label>
+  <select id="imageStyle">
+   <option>Photorealistic</option>
+   <option>Cinematic</option>
+   <option>3D Render</option>
+   <option>Anime</option>
+   <option>Digital Art</option>
+   <option>Fantasy</option>
+   <option>Pixel Art</option>
+  </select>
+  <button onclick="generateImage()">✦ Generate Image</button>
+  <div class="output" id="imageOutput">Your generated image will appear here.</div>
+ </div>
+</section>
+
+<!-- VIDEO STUDIO -->
+<section id="video" class="hidden">
+ <h1>Image to Video Studio</h1>
+ <p class="subtitle">Animate an image and create a video.</p>
+ <div class="panel">
+  <label>Upload your image</label>
+  <input type="file" id="photoInput" accept="image/*">
+  <label>Animation style</label>
+  <select id="animation">
+   <option value="zoom">Cinematic Zoom</option>
+   <option value="pan">Camera Pan</option>
+   <option value="pulse">Pulse</option>
+   <option value="shake">Camera Shake</option>
+   <option value="float">Floating Camera</option>
+  </select>
+  <label>Video duration</label>
+  <select id="duration">
+   <option value="5">5 seconds</option>
+   <option value="10" selected>10 seconds</option>
+   <option value="15">15 seconds</option>
+  </select>
+  <canvas id="videoCanvas" width="1280" height="720"></canvas>
+  <br>
+  <button onclick="startVideo()">▶ Preview Animation</button>
+  <button onclick="recordVideo()">⬇ Export Video</button>
+  <div id="videoStatus" class="output">Upload an image to get started.</div>
+ </div>
+</section>
+
+<!-- FILTERS -->
+<section id="filters" class="hidden">
+ <h1>50 Video Filters</h1>
+ <p class="subtitle">Choose an effect for your image-to-video project.</p>
+ <div class="panel">
+  <input type="text" id="filterSearch" placeholder="Search filters..." oninput="searchFilters()">
+  <div class="filtergrid" id="filterGrid"></div>
+  <p id="selectedFilter">Selected: Cinematic</p>
+  <button onclick="showPage('video')">Open Video Studio →</button>
+ </div>
+</section>
+
+</main>
+</div>
+
+<script>
+function showPage(id,element){
+ document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+ document.querySelectorAll('.nav').forEach(n=>n.classList.remove('active'));
+ if(element)element.classList.add('active');
+ else{
+  document.querySelectorAll('.nav').forEach(n=>{
+   if(n.textContent.toLowerCase().includes(id==='image'?'image generator':id==='video'?'video studio':id==='filters'?'50 filters':id))n.classList.add('active');
+  });
+ }
+}
+
+// AI CHAT
+async function sendChat(){
+ const input=document.getElementById('chatInput');
+ const prompt=input.value.trim();
+ if(!prompt)return;
+ const box=document.getElementById('chatbox');
+ box.innerHTML+=`<div class="message user"></div>`;
+ box.lastElementChild.textContent=prompt;
+ input.value='';
+ const reply=document.createElement('div');
+ reply.className='message bot';
+ reply.textContent='Thinking...';
+ box.appendChild(reply);
+ box.scrollTop=box.scrollHeight;
+ try{
+  const response=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt));
+  if(!response.ok)throw Error('AI service unavailable');
+  reply.textContent=await response.text();
+ }catch(e){
+  reply.textContent='Could not reach the AI service. Please try again later.';
+ }
+ box.scrollTop=box.scrollHeight;
+}
+
+// IMAGE GENERATOR
+function generateImage(){
+ const prompt=document.getElementById('imagePrompt').value.trim();
+ const style=document.getElementById('imageStyle').value;
+ const output=document.getElementById('imageOutput');
+ if(!prompt){output.textContent='Please enter an image prompt.';return;}
+ output.textContent='Generating your image...';
+ const description=style+', '+prompt;
+ const url='https://image.pollinations.ai/prompt/'+encodeURIComponent(description)+'?width=1024&height=1024&nologo=true';
+ const img=new Image();
+ img.crossOrigin='anonymous';
+ img.onload=()=>{
+  output.innerHTML='';
+  output.appendChild(img);
+  const link=document.createElement('a');
+  link.href=url;link.download='AI-image.jpg';
+  link.textContent='Open or save image';
+  link.style.display='block';link.style.color='#83b6ff';
+  output.appendChild(link);
+ };
+ img.onerror=()=>output.textContent='Image service unavailable. Please try again.';
+ img.src=url;
+}
+
+// 50 FILTER PRESETS
+const filters=[
+ ['Cinematic','contrast(1.3) saturate(1.2) brightness(.9)'],
+ ['Black & White','grayscale(1)'],
+ ['Vintage','sepia(.7) contrast(1.1)'],
+ ['Dreamy','blur(1px) brightness(1.2)'],
+ ['Horror','grayscale(.8) contrast(1.7) brightness(.65)'],
+ ['Neon','saturate(2.5) contrast(1.3)'],
+ ['Cold Blue','hue-rotate(180deg) saturate(1.2)'],
+ ['Warm Sunset','sepia(.35) saturate(1.6)'],
+ ['Retro VHS','contrast(1.4) saturate(1.5)'],
+ ['Dark Mode','brightness(.55) contrast(1.4)'],
+ ['Golden','sepia(.45) saturate(1.7)'],
+ ['Frozen','hue-rotate(165deg) saturate(.7) brightness(1.1)'],
+ ['Dream','blur(2px) saturate(1.5)'],
+ ['Noir','grayscale(1) contrast(1.8)'],
+ ['Cyberpunk','hue-rotate(260deg) saturate(2)'],
+ ['Glitch','contrast(1.8) saturate(2.5)'],
+ ['Sepia','sepia(1)'],
+ ['Bright','brightness(1.4)'],
+ ['Dark','brightness(.4)'],
+ ['High Contrast','contrast(2)'],
+ ['Saturated','saturate(2.5)'],
+ ['Desaturated','saturate(.3)'],
+ ['Negative','invert(1)'],
+ ['Blur','blur(3px)'],
+ ['Soft Focus','blur(1px) brightness(1.1)'],
+ ['Old Film','sepia(.6) grayscale(.3)'],
+ ['Pink Glow','hue-rotate(300deg) saturate(1.5)'],
+ ['Green Screen','hue-rotate(70deg) saturate(1.8)'],
+ ['Purple Haze','hue-rotate(250deg)'],
+ ['Orange Fire','hue-rotate(330deg) saturate(1.8)'],
+ ['Underwater','hue-rotate(150deg) brightness(.9)'],
+ ['Moonlight','grayscale(.5) hue-rotate(190deg)'],
+ ['Sunshine','sepia(.2) brightness(1.2)'],
+ ['Dusty','sepia(.5) contrast(.9)'],
+ ['Electric','saturate(3) contrast(1.5)'],
+ ['Faded','contrast(.7) brightness(1.1)'],
+ ['Sharp','contrast(1.5) saturate(1.2)'],
+ ['Muted','saturate(.5)'],
+ ['Arctic','hue-rotate(175deg) brightness(1.1)'],
+ ['Lava','hue-rotate(320deg) saturate(2)'],
+ ['Pixel Retro','contrast(1.5) saturate(1.8)'],
+ ['Comic','saturate(2) contrast(1.7)'],
+ ['Fairytale','sepia(.15) saturate(1.4) brightness(1.15)'],
+ ['Storm','grayscale(.7) contrast(1.5)'],
+ ['Mystery','brightness(.7) hue-rotate(220deg)'],
+ ['Rainbow','hue-rotate(90deg) saturate(2)'],
+ ['Flashback','sepia(.3) brightness(1.1)'],
+ ['Surreal','invert(.2) saturate(2)'],
+ ['Steel','grayscale(.5) contrast(1.3)'],
+ ['Epic','contrast(1.4) saturate(1.3) brightness(.95)']
+];
+let selected=0;
+function renderFilters(){
+ const grid=document.getElementById('filterGrid');
+ grid.innerHTML='';
+ filters.forEach((f,i)=>{
+  const b=document.createElement('div');
+  b.className='filter'+(i===selected?' active':'');
+  b.textContent=(i+1)+'. '+f[0];
+  b.onclick=()=>{
+   selected=i;
+   renderFilters();
+   document.getElementById('selectedFilter').textContent='Selected: '+f[0];
+  };
+  grid.appendChild(b);
+ });
+}
+function searchFilters(){
+ const q=document.getElementById('filterSearch').value.toLowerCase();
+ document.querySelectorAll('.filter').forEach((el,i)=>{
+  el.style.display=filters[i][0].toLowerCase().includes(q)?'block':'none';
+ });
+}
+renderFilters();
+
+// IMAGE VIDEO STUDIO
+const canvas=document.getElementById('videoCanvas');
+const ctx=canvas.getContext('2d');
+let photo=null,animating=false,recording=false;
+let recorder=null,parts=[],frame=0;
+let videoFilter=filters[0][1];
+
+document.getElementById('photoInput').addEventListener('change',e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ photo=new Image();
+ photo.onload=()=>{
+  frame=0;
+  drawFrame();
+  document.getElementById('videoStatus').textContent='Image loaded successfully!';
+ };
+ photo.src=URL.createObjectURL(file);
+});
+
+function drawFrame(){
+ if(!photo)return;
+ const w=canvas.width,h=canvas.height;
+ ctx.clearRect(0,0,w,h);
+ ctx.save();
+ ctx.filter=videoFilter;
+ let scale=Math.max(w/photo.width,h/photo.height);
+ let t=frame/60;
+ const mode=document.getElementById('animation').value;
+ let zoom=1,x=0,y=0;
+ if(mode==='zoom')zoom=1+t*.018;
+ if(mode==='pan')x=Math.sin(t*.7)*50;
+ if(mode==='pulse')zoom=1+Math.sin(t*3)*.04;
+ if(mode==='shake'){x=Math.sin(t*15)*7;y=Math.cos(t*17)*6;}
+ if(mode==='float'){y=Math.sin(t*1.5)*25;zoom=1.06;}
+ const dw=photo.width*scale*zoom;
+ const dh=photo.height*scale*zoom;
+ ctx.drawImage(photo,(w-dw)/2+x,(h-dh)/2+y,dw,dh);
+ ctx.restore();
+ frame++;
+}
+
+function startVideo(){
+ if(!photo){alert('Please upload an image first.');return;}
+ animating=true;
+ function loop(){
+  if(!animating)return;
+  drawFrame();
+  requestAnimationFrame(loop);
+ }
+ loop();
+ document.getElementById('videoStatus').textContent='Preview playing.';
+}
+
+function stopAnimation(){animating=false;}
+
+async function recordVideo(){
+ if(!photo){alert('Upload an image first.');return;}
+ stopAnimation();
+ frame=0;
+ videoFilter=filters[selected][1];
+ const duration=Number(document.getElementById('duration').value);
+ const stream=canvas.captureStream(30);
+ let mime='video/webm';
+ if(MediaRecorder.isTypeSupported('video/webm;codecs=vp9'))mime='video/webm;codecs=vp9';
+ try{
+  recorder=new MediaRecorder(stream,{mimeType:mime});
+ }catch(e){
+  alert('Video recording is not supported in this browser.');
+  return;
+ }
+ parts=[];
+ recorder.ondataavailable=e=>{if(e.data.size)parts.push(e.data);};
+ recorder.onstop=()=>{
+  const blob=new Blob(parts,{type:'video/webm'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='AI-Studio-Video.webm';
+  a.click();
+  document.getElementById('videoStatus').textContent='Video exported successfully!';
+ };
+ recorder.start();
+ document.getElementById('videoStatus').textContent='Recording video...';
+ const start=performance.now();
+ function capture(now){
+  if(now-start>=duration*1000){
+   recorder.stop();
+   stream.getTracks().forEach(t=>t.stop());
+   return;
+  }
+  drawFrame();
+  requestAnimationFrame(capture);
+ }
+ requestAnimationFrame(capture);
+}
+</script>
+</body>
+</html>
